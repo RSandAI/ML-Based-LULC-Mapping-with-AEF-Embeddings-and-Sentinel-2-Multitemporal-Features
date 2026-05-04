@@ -39,7 +39,6 @@
 - [Feature Configurations](#feature-configurations)
 - [Methods](#methods)
 - [Performance Metrics](#performance-metrics)
-- [Hazelnut Orchard Classification](#hazelnut-orchard-classification)
 - [Estimated LULC Distribution (Hectares)](#estimated-lulc-distribution-hectares)
 - [SHAP Explainability](#shap-explainability)
 - [Data Availability](#data-availability)

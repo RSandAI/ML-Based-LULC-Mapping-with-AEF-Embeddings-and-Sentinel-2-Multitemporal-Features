@@ -1,13 +1,19 @@
+<img src="assets/header.png" height=450 width=1280 alt=""/>
 
-# Machine Learning-Based LULC Mapping with AlphaEarth Foundation Embeddings and Sentinel-2 Multitemporal Features
-
-> **A Comparative Study Focusing on Hazelnut (*Corylus avellana* L.) Orchard Delineation**
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](KOLAB_NOT_DEFTERİNİZİN_URLSİ)
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Google Earth Engine](https://img.shields.io/badge/Platform-Google%20Earth%20Engine-4285F4?logo=google)](https://earthengine.google.com/)
-[![Paper](https://img.shields.io/badge/Journal-IJDE-orange)](https://www.tandfonline.com/journals/tjde20)
+<p align="center">
+  <a href="#">
+    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.9+-blue.svg" alt="Python">
+  </a>
+  <a href="https://earthengine.google.com/">
+    <img src="https://img.shields.io/badge/Platform-Google%20Earth%20Engine-4285F4?logo=google" alt="Google Earth Engine">
+  </a>
+  <a href="https://www.tandfonline.com/journals/tjde20">
+    <img src="https://img.shields.io/badge/Journal-IJDE-orange" alt="Paper">
+  </a>
+</p>
 
 **Authors:** Elif Sertel¹², Dogu Ilmak³, Samet Aksoy²⁴, Beyza Ustaoğlu⁵
 
@@ -302,9 +308,3 @@ If you use this code or data in your research, please cite:
   note    = {Under review}
 }
 ```
-
-<br>
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

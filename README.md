@@ -16,7 +16,7 @@
 </p>
 -->
 
-**Authors:** Elif Sertel¹², Dogu Ilmak³, Samet Aksoy²⁴, Beyza Ustaoğlu⁵
+**Authors:** Elif Sertel¹², Doğu İlmak³, Samet Aksoy²⁴, Beyza Ustaoğlu⁵
 
 ¹ University of California, Los Angeles — The B. John Garrick Institute for the Risk Sciences  
 ² Istanbul Technical University — Dept. of Geomatics Engineering  

@@ -210,7 +210,9 @@ The best Hazelnut model (**ID 2, AEF + XGBoost**) correctly identified **>92%** 
 
 Substituting AEF embeddings for conventional S2-All features yields a **+1.47 percentage point F1 improvement** for hazelnut. This is attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
 
-> **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the [tables/](./tables/) directory.
+> **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the **[tables/](./tables/)** directory.
+
+> **Notebooks:** Sentinel-2 All and AlphaEarth training notebooks can be found in **[notebooks/](./notebooks/)**.
 
 <br>
 
@@ -304,6 +306,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (Fig 2) reveals 
 | **Classification code & configs** | This repository |
 | **LULC maps (interactive)** | [GEE Web Application](#) *(link to be updated)* |
 | **Detailed Metric Tables** | [View Folder](./tables/) |
+| **Training Notebooks** | [View Folder](./notebooks/) |
 
 <br>
 

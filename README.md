@@ -50,17 +50,16 @@
 
 ## Overview
 
-This repository contains the complete classification pipelines, feature extraction scripts, hyperparameter configurations, and accuracy assessment code associated with the above-referenced study.
+This repository provides the complete classification pipelines, feature extraction scripts, hyperparameter configurations, and accuracy assessment code for a systematic comparative evaluation of 64-dimensional **AlphaEarth Foundation (AEF) embeddings** against conventional multitemporal **Sentinel-2** spectral feature sets for **11-class LULC mapping** across Sakarya Province, northwestern Türkiye — one of the world's most extensive hazelnut (*Corylus avellana* L.) production regions. Twenty classification experiments were conducted by pairing four input feature configurations with five machine learning algorithms (Random Forest, XGBoost, LightGBM, LinearSVC, and Decision Tree), demonstrating that AEF embeddings consistently outperform all Sentinel-2-based configurations across every algorithm and evaluation metric, with the best-performing AEF + LightGBM model achieving an overall accuracy of **95.75%** and a weighted F1 score of **0.9561**.
 
-The study presents a **systematic comparative evaluation** of 64-dimensional **AlphaEarth Foundation (AEF) embeddings** against conventional multitemporal **Sentinel-2** spectral feature sets for **11-class LULC mapping** across Sakarya Province, northwestern Türkiye — one of the world's most extensive hazelnut (*Corylus avellana* L.) production regions.
-
-**20 classification experiments** were conducted by pairing four input feature configurations with five machine learning algorithms. AEF embeddings consistently outperformed all Sentinel-2-based configurations across every algorithm and evaluation metric.
+<br>
 
 | Best Model | Overall Accuracy | Weighted F1 | Cohen's κ | MCC |
 |:----------:|:----------------:|:-----------:|:---------:|:---:|
 | **AEF + LightGBM** | **95.75%** | **0.9561** | **0.9264** | **0.9266** |
 | AEF + XGBoost | 95.57% | 0.9540 | 0.9233 | 0.9234 |
 | AEF + Random Forest | 95.45% | 0.9519 | 0.9210 | 0.9212 |
+| AEF + LinearSVC | 94.34% | 0.9422 | 0.9022 | 0.9024 |
 | S2-All + XGBoost | 93.41% | 0.9313 | 0.8857 | 0.8860 |
 | S2-All + Random Forest | 93.17% | 0.9278 | 0.8809 | 0.8814 |
 
@@ -70,11 +69,7 @@ The study presents a **systematic comparative evaluation** of 64-dimensional **A
 
 ## Study Area
 
-**Sakarya Province**, located in the Marmara-Black Sea transition zone of northwestern Türkiye, is one of Turkey's leading hazelnut production regions. The province encompasses a heterogeneous landscape spanning dense forest, agricultural lands, urban fabric, wetlands, and water bodies.
-
-- **Spatial extent:** ~48.9 million valid pixels at 10 m resolution
-- **Thematic complexity:** 11 LULC classes across a spectrally heterogeneous agricultural mosaic
-- **Agricultural significance:** Turkey accounts for >70% of global hazelnut output (~747,000 ha cultivation area, 650,000 tonnes production as of 2023)
+**Sakarya Province**, located in the Marmara–Black Sea transition zone of northwestern Türkiye, encompasses a heterogeneous landscape of dense forest, fragmented agricultural lands, urban fabric, wetlands, and water bodies, making it one of Turkey's most complex and thematically rich LULC mapping environments. The province is also among Turkey's leading hazelnut production regions, situated within the broader Black Sea coastal belt where Turkey accounts for more than 70% of global hazelnut output — approximately 747,000 ha under cultivation and 650,000 tonnes produced as of 2023. The study area covers ~48.9 million valid pixels at 10 m spatial resolution and spans 11 spectrally heterogeneous LULC classes, seven of which correspond to distinct forms of vegetated cover, posing a particularly demanding discrimination problem for medium-resolution satellite-based classification.
 
 <br>
 
@@ -84,12 +79,13 @@ The study presents a **systematic comparative evaluation** of 64-dimensional **A
 
 Training and validation samples were collected as polygon-based reference data for all 11 LULC classes. Spatial splitting was enforced at the **polygon level** to prevent data leakage from spatial autocorrelation.
 
-| Partition | Pixels | Polygons |
-|-----------|--------|----------|
-| Training | 549,816 (74%) | 4,387 (72%) |
-| Validation | 132,004 (18%) | 1,097 (18%) |
-| Test | 64,856 (9%) | 610 (10%) |
-| **Total** | **746,676** | **6,094** |
+| Partition | AEF Pixels | AEF Polygons | S2 Pixels | S2 Polygons |
+|-----------|:----------:|:------------:|:---------:|:-----------:|
+| Training | 549,816 (74%) | 4,387 (72%) | 549,816 (74%) | 4,387 (72%) |
+| Validation | 132,004 (18%) | 1,097 (18%) | 132,002 (18%) | 1,097 (18%) |
+| Test | 64,856 (9%) | 610 (10%) | 64,856 (9%) | 610 (10%) |
+| **Total** | **746,676** | **6,094** | **746,674** | **6,094** |
+
 
 ### LULC Classes (11-class scheme)
 
@@ -155,9 +151,6 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 **Best configuration hyperparameters (AEF + LightGBM, ID 1):**
 - `learning_rate = 0.1`, `max_depth = 10`, `n_estimators = 200`, `num_leaves = 63`
 
-**Best configuration hyperparameters (AEF + XGBoost, ID 2):**
-- `colsample_bytree = 0.6`, `learning_rate = 0.1`, `max_depth = 6`, `n_estimators = 200`, `subsample = 1.0`
-
 <br>
 
 ## Performance Metrics
@@ -213,11 +206,7 @@ Hazelnut (*Corylus avellana* L.) is a deciduous perennial woody crop whose pheno
 | 4 | AEF | LinearSVC | 0.7541 | 0.8985 | 0.8200 |
 | 17 | S2-All | Random Forest | 0.8753 | 0.8257 | 0.8498 |
 
-**The best Hazelnut model (ID 2, AEF + XGBoost) correctly identified >92% of all actual hazelnut pixels in the unseen test set** — without any crop-specific model adaptation or fine-tuning.
-
-Substituting AEF embeddings for conventional S2-All features in XGBoost (ID 2 vs. ID 16) yields a **+1.47 percentage point F1 improvement** for hazelnut, attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
-
-AEF-derived hazelnut spatial distributions also demonstrated strong qualitative agreement with LPIS (Land Parcel Identification System) parcel boundaries across core production zones, providing independent geographic validation for the predicted orchard patterns.
+**The best Hazelnut model (ID 2, AEF + XGBoost) correctly identified >92% of all actual hazelnut pixels in the unseen test set** — without any crop-specific model adaptation or fine-tuning. Substituting AEF embeddings for conventional S2-All features in XGBoost (ID 2 vs. ID 16) yields a **+1.47 percentage point F1 improvement** for hazelnut, attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve. AEF-derived hazelnut spatial distributions also demonstrated strong qualitative agreement with LPIS (Land Parcel Identification System) parcel boundaries across core production zones, providing independent geographic validation for the predicted orchard patterns.
 
 <br>
 
@@ -238,6 +227,13 @@ Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels a
 | **Water Bodies** | 9,044 | 9,138 | 9,392 | 9,922 | 9,048 | 9,054 |
 | **Wetland** | 1,643 | 1,334 | 815 | 3,326 | 1,135 | 439 |
 | **Water Course** | 1,342 | 1,289 | 860 | 1,565 | 979 | 827 |
+
+<div align="center">
+  <img src="/assets/Inference.png" width="960" alt="LULC Maps">
+  <p>
+    <em><b>Figure 1</b> — Predicted LULC maps across Sakarya Province for the six best-performing model configurations.</em>
+  </p>
+</div>
 
 ### Notable Spatial Patterns
 
@@ -271,7 +267,7 @@ Class-specific SHAP patterns reveal that AEF dimensions function as **semantical
 - **Wetland:** primarily driven by A16 (transitional moisture conditions)
 - **Urban:** well-separated through A35 and A36
 
-The **spatial distribution of cumulative Hazelnut SHAP values** (see Fig. 7) reveals high positive intensities clustering coherently in the northeastern coastal foothills (~30°45'E–31°E, 40°50'N–41°10'N), accurately tracking intensive orchard cultivation zones. The asymmetric SHAP range (−7.42 to **+19.15**) reflects high-confidence positive prediction in core hazelnut areas.
+The **spatial distribution of cumulative Hazelnut SHAP values** (Fig 2) reveals high positive intensities clustering coherently in the northeastern coastal foothills (~30°45'E–31°E, 40°50'N–41°10'N), accurately tracking intensive orchard cultivation zones. The asymmetric SHAP range (−7.42 to **+19.15**) reflects high-confidence positive prediction in core hazelnut areas.
 
 ### Sentinel-2 SHAP Analysis (Baseline: ID 16 — S2-All + XGBoost)
 
@@ -282,6 +278,17 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (see Fig. 7) rev
 
 <br>
 
+<p align="center">
+  <img src="/assets/Hazelnut_SHAP_AlphaEarth.png" width="45%" alt="AlphaEarth">
+  <img src="/assets/Hazelnut_SHAP_Sentinel_2.png" width="45%" alt="Sentinel-2">
+</p>
+
+<p align="center">
+  <em><b>Figure 2</b> — Spatial distribution of cumulative SHAP values for the Hazelnut class. Left: AlphaEarth LightGBM model. Right: Sentinel-2 XGBoost model.</em>
+</p>
+
+<br>
+
 ## Data Availability
 
 | Resource | Access |
@@ -289,7 +296,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (see Fig. 7) rev
 | **Sentinel-2 Level-2A** | [Copernicus Open Access Hub](https://scihub.copernicus.eu) · GEE: `COPERNICUS/S2_SR_HARMONIZED` |
 | **AlphaEarth Foundation Embeddings** | Google Earth Engine: `Satellite Embedding V1` (2017–2025, 10 m) |
 | **Classification code & configs** | This repository |
-| **LULC maps (interactive)** | [GEE Web Application](https://github.com/RSandAI/ML-Based-LULC-Mapping-with-AEF-Embeddings-and-Sentinel-2-Multitemporal-Features) *(link to be updated upon publication)* |
+| **LULC maps (interactive)** | [GEE Web Application](#) *(link to be updated)* |
 
 <br>
 

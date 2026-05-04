@@ -3,6 +3,7 @@
 
 > **A Comparative Study Focusing on Hazelnut (*Corylus avellana* L.) Orchard Delineation**
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](KOLAB_NOT_DEFTERİNİZİN_URLSİ)
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Google Earth Engine](https://img.shields.io/badge/Platform-Google%20Earth%20Engine-4285F4?logo=google)](https://earthengine.google.com/)
@@ -18,7 +19,7 @@
 
 **Corresponding author:** [esertel@ucla.edu](mailto:esertel@ucla.edu)
 
----
+<br>
 
 ## Table of Contents
 
@@ -31,12 +32,10 @@
 - [Hazelnut Orchard Classification](#hazelnut-orchard-classification)
 - [Estimated LULC Distribution (Hectares)](#estimated-lulc-distribution-hectares)
 - [SHAP Explainability](#shap-explainability)
-- [Figures](#figures)
-- [Repository Structure](#repository-structure)
 - [Data Availability](#data-availability)
 - [Citation](#citation)
 
----
+<br>
 
 ## Overview
 
@@ -56,7 +55,7 @@ The study presents a **systematic comparative evaluation** of 64-dimensional **A
 
 > AEF + LightGBM surpasses the best conventional Sentinel-2 configuration by **+2.34 percentage points** in overall accuracy and outperforms widely used global products (ESA WorldCover ~74.4%, Dynamic World ~72%) by a substantial margin.
 
----
+<br>
 
 ## Study Area
 
@@ -66,7 +65,7 @@ The study presents a **systematic comparative evaluation** of 64-dimensional **A
 - **Thematic complexity:** 11 LULC classes across a spectrally heterogeneous agricultural mosaic
 - **Agricultural significance:** Turkey accounts for >70% of global hazelnut output (~747,000 ha cultivation area, 650,000 tonnes production as of 2023)
 
----
+<br>
 
 ## Dataset
 
@@ -85,7 +84,7 @@ Training and validation samples were collected as polygon-based reference data f
 
 `Hazelnut` · `Forest` · `Permanent Cropland` · `Arable Land` · `Grassland` · `Sparsely Vegetated Areas` · `Discontinuous Urban Fabric` · `Road and Rail Networks` · `Water Courses` · `Water Bodies` · `Wetland`
 
----
+<br>
 
 ## Feature Configurations
 
@@ -124,7 +123,7 @@ Nine indices computed per acquisition date:
 
 Full multitemporal stack integrating all spectral bands and indices across both dates.
 
----
+<br>
 
 ## Methods
 
@@ -148,7 +147,7 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 **Best configuration hyperparameters (AEF + XGBoost, ID 2):**
 - `colsample_bytree = 0.6`, `learning_rate = 0.1`, `max_depth = 6`, `n_estimators = 200`, `subsample = 1.0`
 
----
+<br>
 
 ## Performance Metrics
 
@@ -186,7 +185,7 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 - **Balanced Accuracy** is markedly lower than Overall Accuracy across all experiments, reflecting inherent class imbalance in real-world LULC distributions — an expected and ecologically meaningful outcome.
 - **Cohen's κ and MCC** converge closely across all 20 experiments, confirming metric consistency and ruling out evaluation artifacts.
 
----
+<br>
 
 ## Hazelnut Orchard Classification
 
@@ -209,7 +208,7 @@ Substituting AEF embeddings for conventional S2-All features in XGBoost (ID 2 vs
 
 AEF-derived hazelnut spatial distributions also demonstrated strong qualitative agreement with LPIS (Land Parcel Identification System) parcel boundaries across core production zones, providing independent geographic validation for the predicted orchard patterns.
 
----
+<br>
 
 ## Estimated LULC Distribution (Hectares)
 
@@ -237,7 +236,7 @@ Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels a
 - **Water Bodies** show the highest inter-model consistency (~9,000–9,900 ha), expected given the strong spectral contrast of open water.
 - **Wetland and Water Course** exhibit the highest relative variance, consistent with their small spatial extent, spectral ambiguity, and limited training data.
 
----
+<br>
 
 ## SHAP Explainability
 
@@ -270,59 +269,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (see Fig. 7) rev
 - Hazelnut discrimination relies on **B11_Jun** (peak canopy SWIR) and **B6_Jun** (red-edge chlorophyll)
 - Cumulative Hazelnut SHAP spatial range is substantially more constrained (−7.58 to +**7.40**) vs. AEF (+19.15) — quantitatively demonstrating the superior discriminative certainty of foundation model embeddings for this perennial crop
 
----
-
-## Figures
-
-> *Figures are referenced as they appear in the published article. Rendered images can be added to the `/figures/` directory.*
-
-| Figure | Description |
-|--------|------------|
-| **Fig. 1** | Geographic location and extent of the study area — Sakarya Province, northwestern Türkiye |
-| **Fig. 2** | LULC class reference samples visualized on Sentinel-2 (S2) imagery and AEF embedding composites |
-| **Fig. 3** | Confusion matrices for the six best-performing classification experiments (IDs 1–4, 16, 17) |
-| **Fig. 4** | LULC classification maps: (a) LightGBM+AEF, (b) XGBoost+AEF, (c) RF+AEF, (d) LinearSVC+AEF, (e) XGBoost+S2, (f) RF+S2 |
-| **Fig. 5** | Top 20 global feature importances (SHAP) — LightGBM + AEF (ID 1) |
-| **Fig. 6** | Class-wise SHAP summary plots — LightGBM + AEF (ID 1), all 11 LULC classes |
-| **Fig. 7** | Spatial distribution of cumulative Hazelnut SHAP values — AEF + LightGBM (ID 1) |
-| **Fig. 8** | Top 20 global feature importances (SHAP) — XGBoost + S2-All (ID 16) |
-| **Fig. 9** | Class-wise SHAP summary plots — XGBoost + S2-All (ID 16), all 11 LULC classes |
-| **Fig. 10** | Spatial distribution of cumulative Hazelnut SHAP values — XGBoost + S2-All (ID 16) |
-| **Fig. 11** | SHAP force plots — Hazelnut, Urban, Sparsely Vegetated (AEF + LightGBM, ID 1) |
-| **Fig. 12** | SHAP force plots — Hazelnut, Forest, Water Bodies (S2 + XGBoost, ID 16) |
-
----
-
-## Repository Structure
-
-```
-├── data/
-│   ├── samples/              # Polygon-based reference data (train/val/test splits)
-│   └── sentinel2/            # GEE export scripts for multitemporal Sentinel-2
-├── features/
-│   ├── aef_extraction.py     # AlphaEarth Foundation embedding extraction (GEE)
-│   ├── s2_bands.py           # Multitemporal Sentinel-2 band stacking
-│   └── s2_indices.py         # Spectral index computation (9 indices × 2 dates)
-├── classification/
-│   ├── hyperparameter_search.py   # Stratified 5-fold grid search (all classifiers)
-│   ├── train_evaluate.py          # Training, inference, and metric computation
-│   └── configs/                   # Best hyperparameter configurations (JSON)
-├── explainability/
-│   ├── shap_global.py        # Global SHAP summary plots
-│   ├── shap_classwise.py     # Per-class SHAP analysis
-│   ├── shap_spatial.py       # Spatial SHAP map generation
-│   └── shap_forceplots.py    # Local force plot visualization
-├── outputs/
-│   ├── maps/                 # Predicted LULC rasters (.tif) for top-6 models
-│   ├── metrics/              # Full accuracy tables (CSV)
-│   └── figures/              # All paper figures
-├── notebooks/
-│   └── analysis.ipynb        # End-to-end reproducibility notebook
-├── requirements.txt
-└── README.md
-```
-
----
+<br>
 
 ## Data Availability
 
@@ -333,17 +280,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (see Fig. 7) rev
 | **Classification code & configs** | This repository |
 | **LULC maps (interactive)** | [GEE Web Application](https://github.com/RSandAI/ML-Based-LULC-Mapping-with-AEF-Embeddings-and-Sentinel-2-Multitemporal-Features) *(link to be updated upon publication)* |
 
----
-
-## Requirements
-
-```bash
-pip install -r requirements.txt
-```
-
-Core dependencies: `scikit-learn`, `xgboost`, `lightgbm`, `shap`, `numpy`, `pandas`, `geopandas`, `rasterio`, `matplotlib`, `earthengine-api`
-
----
+<br>
 
 ## Citation
 
@@ -361,7 +298,7 @@ If you use this code or data in your research, please cite:
 }
 ```
 
----
+<br>
 
 ## License
 

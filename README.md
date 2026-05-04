@@ -1,5 +1,5 @@
 <img src="assets/header.png" height=450 width=1280 alt=""/>
-
+<!--
 <p align="center">
   <a href="#">
     <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
@@ -14,6 +14,7 @@
     <img src="https://img.shields.io/badge/Journal-IJDE-orange" alt="Paper">
   </a>
 </p>
+-->
 
 **Authors:** Elif Sertel¹², Dogu Ilmak³, Samet Aksoy²⁴, Beyza Ustaoğlu⁵
 
@@ -54,19 +55,6 @@ This repository provides the complete classification pipelines, feature extracti
 
 <br>
 
-| Best Model | Overall Accuracy | Weighted F1 | Cohen's κ | MCC |
-|:----------:|:----------------:|:-----------:|:---------:|:---:|
-| **AEF + LightGBM** | **95.75%** | **0.9561** | **0.9264** | **0.9266** |
-| AEF + XGBoost | 95.57% | 0.9540 | 0.9233 | 0.9234 |
-| AEF + Random Forest | 95.45% | 0.9519 | 0.9210 | 0.9212 |
-| AEF + LinearSVC | 94.34% | 0.9422 | 0.9022 | 0.9024 |
-| S2-All + XGBoost | 93.41% | 0.9313 | 0.8857 | 0.8860 |
-| S2-All + Random Forest | 93.17% | 0.9278 | 0.8809 | 0.8814 |
-
-> AEF + LightGBM surpasses the best conventional Sentinel-2 configuration by **+2.34 percentage points** in overall accuracy and outperforms widely used global products (ESA WorldCover ~74.4%, Dynamic World ~72%) by a substantial margin.
-
-<br>
-
 ## Study Area
 
 **Sakarya Province**, located in the Marmara–Black Sea transition zone of northwestern Türkiye, encompasses a heterogeneous landscape of dense forest, fragmented agricultural lands, urban fabric, wetlands, and water bodies, making it one of Turkey's most complex and thematically rich LULC mapping environments. The province is also among Turkey's leading hazelnut production regions, situated within the broader Black Sea coastal belt where Turkey accounts for more than 70% of global hazelnut output — approximately 747,000 ha under cultivation and 650,000 tonnes produced as of 2023. The study area covers ~48.9 million valid pixels at 10 m spatial resolution and spans 11 spectrally heterogeneous LULC classes, seven of which correspond to distinct forms of vegetated cover, posing a particularly demanding discrimination problem for medium-resolution satellite-based classification.
@@ -78,6 +66,8 @@ This repository provides the complete classification pipelines, feature extracti
 ### Reference Samples
 
 Training and validation samples were collected as polygon-based reference data for all 11 LULC classes. Spatial splitting was enforced at the **polygon level** to prevent data leakage from spatial autocorrelation.
+
+**Table 1.** Reference sample distribution (pixels and polygons) used for model training, validation, and testing.
 
 | Partition | AEF Pixels | AEF Polygons | S2 Pixels | S2 Polygons |
 |-----------|:----------:|:------------:|:---------:|:-----------:|
@@ -101,7 +91,7 @@ Google DeepMind's **AlphaEarth Foundations** model fuses Sentinel-1/2, Landsat 8
 
 ### 2. Sentinel-2 Multitemporal Bands — 20 features
 
-Two acquisition windows representing contrasting phenological conditions:
+**Table 2.** Multitemporal Sentinel-2 acquisition dates and phenological purposes.
 
 | Date | Season | Purpose |
 |------|--------|---------|
@@ -113,6 +103,8 @@ Two acquisition windows representing contrasting phenological conditions:
 ### 3. Sentinel-2 Spectral Indices — 18 features
 
 Nine indices computed per acquisition date:
+
+**Table 3.** Spectral indices and corresponding biophysical targets utilized for feature engineering.
 
 | Index | Formula | Biophysical Target |
 |-------|---------|-------------------|
@@ -136,6 +128,8 @@ Full multitemporal stack integrating all spectral bands and indices across both 
 
 ### Machine Learning Classifiers
 
+**Table 4.** Machine learning classifiers and their key characteristics in the context of the study.
+
 | Classifier | Key Characteristics |
 |-----------|-------------------|
 | **Random Forest (RF)** | Bootstrap aggregation + feature bagging; robust to multicollinearity |
@@ -155,7 +149,24 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 
 ## Performance Metrics
 
+<br>
+
+**Table 5.** Summary of the top 6 performing model configurations based on Overall Accuracy.
+
+| Best Model | Overall Accuracy | Weighted F1 | Cohen's κ | MCC |
+|:----------:|:----------------:|:-----------:|:---------:|:---:|
+| **AEF + LightGBM** | **95.75%** | **0.9561** | **0.9264** | **0.9266** |
+| AEF + XGBoost | 95.57% | 0.9540 | 0.9233 | 0.9234 |
+| AEF + Random Forest | 95.45% | 0.9519 | 0.9210 | 0.9212 |
+| AEF + LinearSVC | 94.34% | 0.9422 | 0.9022 | 0.9024 |
+| S2-All + XGBoost | 93.41% | 0.9313 | 0.8857 | 0.8860 |
+| S2-All + Random Forest | 93.17% | 0.9278 | 0.8809 | 0.8814 |
+
+> AEF + LightGBM surpasses the best conventional Sentinel-2 configuration by **+2.34 percentage points** in overall accuracy and outperforms widely used global products (ESA WorldCover ~74.4%, Dynamic World ~72%) by a substantial margin.
+
 ### Full Results — All 20 Experiments
+
+**Table 6.** Performance metrics for all 20 classification experiments.
 
 | ID | Feature Set | Model | OA | BA | F1 (W) | F1 (M) | κ | MCC |
 |:--:|:------------|:------|:--:|:--:|:------:|:------:|:-:|:---:|
@@ -193,6 +204,8 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 
 The best Hazelnut model (**ID 2, AEF + XGBoost**) correctly identified **>92%** of all actual hazelnut pixels in the unseen test set — without any crop-specific model adaptation or fine-tuning.
 
+**Table 7.** Comparative performance of the top 2 models specifically for the Hazelnut orchard class.
+
 | Model ID | Feature Set | Classifier | Precision | Recall | **F1-Score** |
 |:--------:|:------------|:-----------|:---------:|:------:|:------------:|
 | **2** | **AEF** | **XGBoost** | **0.8702** | **0.9246** | **0.8966** |
@@ -201,11 +214,15 @@ The best Hazelnut model (**ID 2, AEF + XGBoost**) correctly identified **>92%** 
 
 Substituting AEF embeddings for conventional S2-All features yields a **+1.47 percentage point F1 improvement** for hazelnut. This is attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
 
+> 📊 **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the [tables/](./tables/) directory.
+
 <br>
 
 ## Estimated LULC Distribution (Hectares)
 
 Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels at 10 m resolution). Values are rounded to the nearest integer.
+
+**Table 8.** Estimated LULC area distribution (hectares) across Sakarya Province derived from top-performing configurations.
 
 | LULC Class | ID 1 (AEF·LGBM) | ID 2 (AEF·XGB) | ID 3 (AEF·RF) | ID 4 (AEF·SVC) | ID 16 (S2·XGB) | ID 17 (S2·RF) |
 |:-----------|----------------:|---------------:|--------------:|---------------:|---------------:|--------------:|
@@ -290,6 +307,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (Fig 2) reveals 
 | **AlphaEarth Foundation Embeddings** | Google Earth Engine: `Satellite Embedding V1` (2017–2025, 10 m) |
 | **Classification code & configs** | This repository |
 | **LULC maps (interactive)** | [GEE Web Application](#) *(link to be updated)* |
+| **Detailed Metric Tables** | [View Folder](./tables/) |
 
 <br>
 

@@ -189,24 +189,17 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 - **Balanced Accuracy** is markedly lower than Overall Accuracy across all experiments, reflecting inherent class imbalance in real-world LULC distributions — an expected and ecologically meaningful outcome.
 - **Cohen's κ and MCC** converge closely across all 20 experiments, confirming metric consistency and ruling out evaluation artifacts.
 
-<br>
+### 🌰 Focus: Hazelnut Orchard Classification
 
-## Hazelnut Orchard Classification
-
-Hazelnut (*Corylus avellana* L.) is a deciduous perennial woody crop whose phenological cycle — including winter catkin flowering and post-harvest canopy senescence — creates a challenging classification problem due to spectral overlap with Forest and Permanent Cropland.
-
-### Per-Class Hazelnut Results (Top 6 Configurations)
+The best Hazelnut model (**ID 2, AEF + XGBoost**) correctly identified **>92%** of all actual hazelnut pixels in the unseen test set — without any crop-specific model adaptation or fine-tuning.
 
 | Model ID | Feature Set | Classifier | Precision | Recall | **F1-Score** |
 |:--------:|:------------|:-----------|:---------:|:------:|:------------:|
 | **2** | **AEF** | **XGBoost** | **0.8702** | **0.9246** | **0.8966** |
 | 1 | AEF | LightGBM | 0.8567 | 0.9298 | 0.8917 |
-| 3 | AEF | Random Forest | 0.8564 | 0.9277 | 0.8906 |
 | 16 | S2-All | XGBoost | 0.8898 | 0.8741 | 0.8819 |
-| 4 | AEF | LinearSVC | 0.7541 | 0.8985 | 0.8200 |
-| 17 | S2-All | Random Forest | 0.8753 | 0.8257 | 0.8498 |
 
-**The best Hazelnut model (ID 2, AEF + XGBoost) correctly identified >92% of all actual hazelnut pixels in the unseen test set** — without any crop-specific model adaptation or fine-tuning. Substituting AEF embeddings for conventional S2-All features in XGBoost (ID 2 vs. ID 16) yields a **+1.47 percentage point F1 improvement** for hazelnut, attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve. AEF-derived hazelnut spatial distributions also demonstrated strong qualitative agreement with LPIS (Land Parcel Identification System) parcel boundaries across core production zones, providing independent geographic validation for the predicted orchard patterns.
+Substituting AEF embeddings for conventional S2-All features yields a **+1.47 percentage point F1 improvement** for hazelnut. This is attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
 
 <br>
 

@@ -213,7 +213,7 @@ The best Hazelnut model (**ID 2, AEF + XGBoost**) correctly identified **>92%** 
 
 Substituting AEF embeddings for conventional S2-All features yields a **+1.47 percentage point F1 improvement** for hazelnut. This is attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
 
-> 📊 **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the [tables/](./tables/) directory.
+> **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the [tables/](./tables/) directory.
 
 <br>
 

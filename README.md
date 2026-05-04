@@ -21,7 +21,10 @@
 
 <br>
 
-## Table of Contents
+<details>
+<summary><b>Table of Contents</b></summary>
+
+<br>
 
 - [Overview](#overview)
 - [Study Area](#study-area)
@@ -34,6 +37,8 @@
 - [SHAP Explainability](#shap-explainability)
 - [Data Availability](#data-availability)
 - [Citation](#citation)
+
+</details>
 
 <br>
 

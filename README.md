@@ -139,10 +139,7 @@ Full multitemporal stack integrating all spectral bands and indices across both 
 
 ### Hyperparameter Optimization
 
-Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 per class) per feature configuration.
-
-**Best configuration hyperparameters (AEF + LightGBM, ID 1):**
-- `learning_rate = 0.1`, `max_depth = 10`, `n_estimators = 200`, `num_leaves = 63`
+Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 per class) per feature configuration. **Best configuration hyperparameters for top 6 models can be found [here](./tables/best_params_top_6.txt).**
 
 <br>
 

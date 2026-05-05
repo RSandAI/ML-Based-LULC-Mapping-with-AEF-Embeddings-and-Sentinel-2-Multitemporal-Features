@@ -319,7 +319,7 @@ If you use this code or data in your research, please cite:
   title   = {Machine Learning-Based {LULC} Mapping with {AlphaEarth} Foundation Embeddings
              and {Sentinel-2} Multitemporal Features: A Comparative Study Focusing on
              Hazelnut (\textit{Corylus avellana} {L.}) Orchard},
-  author  = {Sertel, Elif and Ilmak, Dogu and Aksoy, Samet and Ustao\u{g}lu, Beyza},
+  author  = {Sertel, Elif and Ilmak, Dogu and Aksoy, Samet and Ustaoglu, Beyza},
   journal = {International Journal of Digital Earth},
   year    = {2025},
   note    = {Under review}

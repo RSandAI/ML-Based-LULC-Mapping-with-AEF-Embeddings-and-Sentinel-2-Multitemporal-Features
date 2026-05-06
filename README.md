@@ -304,7 +304,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (Fig 2) reveals 
 | **Sentinel-2 Level-2A** | [Copernicus Open Access Hub](https://scihub.copernicus.eu) · GEE: `COPERNICUS/S2_SR_HARMONIZED` |
 | **AlphaEarth Foundation Embeddings** | Google Earth Engine: `Satellite Embedding V1` (2017–2025, 10 m) |
 | **Classification code & configs** | This repository |
-| **LULC maps (interactive)** | [GEE Web Application](#) *(link to be updated)* |
+| **LULC maps (interactive)** | [GEE Web Application](https://laboratory-490414.projects.earthengine.app/view/ml-based-lulc-mapping-with-aef-embeddings-and-sentinel-2) |
 | **Detailed Metric Tables** | [View Folder](./tables/) |
 | **Training Notebooks** | [View Folder](./notebooks/) |
 

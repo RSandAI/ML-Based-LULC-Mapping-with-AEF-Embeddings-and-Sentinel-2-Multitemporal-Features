@@ -1,0 +1,31 @@
+Land Use / Land Cover (LULC) Classification Color Codes
+========================================================
+
+This file defines the class IDs and RGB color representations used for
+visualizing Land Use / Land Cover (LULC) datasets.
+
+Color Format:
+RGB = (Red, Green, Blue)
+Range = 0–255
+
+---------------------------------------------------------------------------
+Class Name                | Code | RGB Color        | Description
+---------------------------------------------------------------------------
+Hazelnut                  | 10   | (238, 128, 5)    | Hazelnut orchards and plantations
+Forest                    | 20   | (128, 255, 0)    | Dense forest and wooded areas
+Permanent Cropland        | 30   | (242, 166, 77)   | Long-term cultivated agricultural land
+Grassland                 | 50   | (204, 242, 77)   | Natural or managed grass-covered land
+Sparsely Vegetated        | 60   | (204, 255, 204)  | Areas with low vegetation density
+Arable Land               | 70   | (255, 255, 168)  | Seasonal or annually cultivated land
+Urban                     | 80   | (255, 0, 0)      | Built-up urban and residential areas
+Road and Rail             | 90   | (204, 0, 0)      | Transportation infrastructure
+Water Course              | 100  | (0, 204, 242)    | Rivers, streams, and canals
+Water Bodies              | 110  | (128, 242, 230)  | Lakes, reservoirs, and ponds
+Wetland                   | 120  | (166, 166, 255)  | Marshes, swamps, and wetland ecosystems
+---------------------------------------------------------------------------
+
+Notes
+-----
+- Each class is assigned a unique integer identifier.
+- RGB values are intended for map rendering and visualization.
+- Colors are selected to provide visual distinction between land cover types.

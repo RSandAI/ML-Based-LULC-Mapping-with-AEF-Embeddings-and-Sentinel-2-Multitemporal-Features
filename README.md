@@ -164,11 +164,11 @@ Two complementary procedures were applied to the test-set predictions of each cl
 - **Polygon-clustered bootstrap** (1,000 iterations) — reference polygons resampled with replacement to construct 95% confidence intervals for weighted F1 and overall accuracy, preserving spatial dependence rather than treating individual pixels as independent.
 - **Repeated random splits** (K = 10) — the full train/validation/test split repeated with 10 independent random seeds (identical hyperparameters) to assess sensitivity to the specific partition realization.
 
-Results are provided in **[tables/](./tables/)** (`bootstrap_ci_by_model.csv`, `bootstrap_paired_comparison.csv`, `repeated_split_summary.csv`).
+Results are provided in **[tables/bootstrap](./tables/bootstrap)** (`bootstrap_ci_by_model.csv`, `bootstrap_paired_comparison.csv`, `repeated_split_summary.csv`).
 
 ### Spatial Block Sensitivity Check
 
-In addition to the standard polygon-random split, a **geographically-disjoint spatial-block split** was implemented (block size determined data-drivenly from the nearest-neighbor distance distribution between polygon centroids) to test sensitivity to the splitting strategy. Results: **[tables/split_sensitivity_comparison.csv](./tables/)**.
+In addition to the standard polygon-random split, a **geographically-disjoint spatial-block split** was implemented (block size determined data-drivenly from the nearest-neighbor distance distribution between polygon centroids) to test sensitivity to the splitting strategy. Results: **[tables/split-sensitivity/](./tables/split-sensitivity/)**.
 
 <br>
 
@@ -242,7 +242,7 @@ The best Hazelnut model (**ID 3, AEF + Random Forest**) correctly identified **>
 
 Comparing the top same-algorithm pairing (AEF + Random Forest vs. S2-All + Random Forest) isolates a **+3.9 percentage point F1 improvement** attributable solely to AEF embeddings. This is attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
 
-> **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the **[tables/](./tables/)** directory (`TableS1_Class_Partition_Breakdown.xlsx`, class-wise accuracy tables).
+> **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the **[tables/](./tables/)** directory.
 
 > **Notebooks:** Sentinel-2 All and AlphaEarth training notebooks can be found in **[notebooks/](./notebooks/)**.
 

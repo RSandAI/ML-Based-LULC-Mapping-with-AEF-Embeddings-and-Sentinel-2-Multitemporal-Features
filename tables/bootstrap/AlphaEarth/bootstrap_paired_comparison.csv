@@ -1,0 +1,11 @@
+model_a,model_b,f1_diff,diff_ci_low,diff_ci_high,p_approx
+RandomForest,DecisionTree,0.0303,0.0202,0.0418,0.0
+RandomForest,XGBoost,-0.0033,-0.0082,0.0007,0.096
+RandomForest,LightGBM,-0.0058,-0.0116,-0.0016,0.006
+RandomForest,LinearSVC,0.0084,0.0014,0.0156,0.02
+DecisionTree,XGBoost,-0.0336,-0.0453,-0.0229,0.0
+DecisionTree,LightGBM,-0.0361,-0.0481,-0.0262,0.0
+DecisionTree,LinearSVC,-0.0219,-0.0314,-0.0142,0.0
+XGBoost,LightGBM,-0.0025,-0.0058,-0.0003,0.026
+XGBoost,LinearSVC,0.0117,0.0039,0.0198,0.002
+LightGBM,LinearSVC,0.0142,0.007,0.023,0.0

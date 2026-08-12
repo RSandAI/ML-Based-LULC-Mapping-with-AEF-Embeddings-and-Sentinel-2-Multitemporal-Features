@@ -1,0 +1,6 @@
+model,f1_weighted,f1_ci_low,f1_ci_high,overall_accuracy,oa_ci_low,oa_ci_high
+RandomForest,0.9212,0.8879,0.945,0.9243,0.8942,0.9468
+DecisionTree,0.8654,0.8256,0.8976,0.8493,0.8078,0.8819
+XGBoost,0.926,0.8928,0.9491,0.9295,0.901,0.9508
+LightGBM,0.9229,0.8919,0.9457,0.9236,0.8948,0.9448
+LinearSVC,0.858,0.8094,0.8967,0.8438,0.7838,0.8908

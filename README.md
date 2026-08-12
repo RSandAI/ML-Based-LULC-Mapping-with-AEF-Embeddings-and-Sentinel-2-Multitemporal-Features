@@ -50,7 +50,9 @@
 
 ## Overview
 
-This repository provides the complete classification pipelines, feature extraction scripts, hyperparameter configurations, and accuracy assessment code for a systematic comparative evaluation of 64-dimensional **AlphaEarth Foundation (AEF) embeddings** against conventional multitemporal **Sentinel-2** spectral feature sets for **11-class LULC mapping** across Sakarya Province, northwestern Türkiye — one of the world's most extensive hazelnut (*Corylus avellana* L.) production regions. Twenty classification experiments were conducted by pairing four input feature configurations with five machine learning algorithms (Random Forest, XGBoost, LightGBM, LinearSVC, and Decision Tree), demonstrating that AEF embeddings consistently outperform all Sentinel-2-based configurations across every algorithm and evaluation metric, with the best-performing AEF + LightGBM model achieving an overall accuracy of **95.75%** and a weighted F1 score of **0.9561**.
+This repository provides the complete classification pipelines, feature extraction scripts, hyperparameter configurations, and accuracy assessment code for a systematic comparative evaluation of 64-dimensional **AlphaEarth Foundation (AEF) embeddings** against conventional multitemporal **Sentinel-2** spectral feature sets for **11-class LULC mapping** across Sakarya Province, northwestern Türkiye — one of the world's most extensive hazelnut (*Corylus avellana* L.) production regions. Twenty classification experiments were conducted by pairing four input feature configurations with five machine learning algorithms (Random Forest, XGBoost, LightGBM, LinearSVC, and Decision Tree), demonstrating that AEF embeddings consistently outperform all Sentinel-2-based configurations across every algorithm and evaluation metric, with the best-performing AEF + LightGBM model achieving an overall accuracy of **95.79%** and a weighted F1 score of **0.9566**.
+
+> **Reproducibility note:** The pipeline uses polygon-grouped, spatially-aware data splitting (`GroupShuffleSplit` / `StratifiedGroupKFold`) with fold-safe feature standardization (no train/test leakage), polygon-clustered bootstrap confidence intervals, a complementary spatial-block cross-validation sensitivity check, and explicit SHAP explainer configuration (probability-space where tractable, documented margin-space otherwise). See [Methods](#methods) and [Data Availability](#data-availability) for details.
 
 <br>
 
@@ -64,7 +66,7 @@ This repository provides the complete classification pipelines, feature extracti
 
 ### Reference Samples
 
-Training and validation samples were collected as polygon-based reference data for all 11 LULC classes. Spatial splitting was enforced at the **polygon level** to prevent data leakage from spatial autocorrelation.
+Training and validation samples were collected as polygon-based reference data for all 11 LULC classes. Spatial splitting was enforced at the **polygon level** (`GroupShuffleSplit`) to prevent data leakage from spatial autocorrelation, and hyperparameter search additionally uses **polygon-grouped stratified 5-fold cross-validation** (`StratifiedGroupKFold`) so that no reference polygon is ever split across folds.
 
 **Table 1.** Reference sample distribution (pixels and polygons) used for model training, validation, and testing.
 
@@ -75,6 +77,7 @@ Training and validation samples were collected as polygon-based reference data f
 | Test | 64,856 (9%) | 610 (10%) | 64,856 (9%) | 610 (10%) |
 | **Total** | **746,676** | **6,094** | **746,674** | **6,094** |
 
+> A per-class breakdown of polygon count, pixel count, mapped area, and median polygon size for each partition — under both the standard polygon-random split and a complementary geographically-disjoint spatial-block split — is provided in **[tables/TableS1_Class_Partition_Breakdown.xlsx](./tables/)**. The spatial distribution of training/validation/test polygons is shown in **[assets/Figure_S1_Spatial_Distribution.png](./assets/)**.
 
 ### LULC Classes (11-class scheme)
 
@@ -132,14 +135,40 @@ Full multitemporal stack integrating all spectral bands and indices across both 
 | Classifier | Key Characteristics |
 |-----------|-------------------|
 | **Random Forest (RF)** | Bootstrap aggregation + feature bagging; robust to multicollinearity |
-| **XGBoost** | L1/L2-regularized gradient boosting; sparsity-aware; most consistent across feature sets |
-| **LightGBM** | GOSS + EFB; fastest training; highest accuracy with AEF; most sensitive to feature quality |
+| **XGBoost** | L1/L2-regularized gradient boosting; sparsity-aware; leads for S2-Bands and S2-Indices |
+| **LightGBM** | GOSS + EFB; fastest training; leads for AEF and S2-All feature configurations |
 | **LinearSVC** | LIBLINEAR coordinate descent; linear baseline; competitive in high-dimensional AEF space |
 | **Decision Tree** | Non-parametric; interpretable baseline; susceptible to overfitting |
 
+All five classifiers are wrapped in a `scikit-learn` `Pipeline` (`StandardScaler` → classifier), so that feature standardization is re-fit within every cross-validation fold — preventing fold-level leakage for scale-sensitive classifiers such as LinearSVC. The final scaler used for evaluation and inference is fit **exclusively on the training partition**.
+
 ### Hyperparameter Optimization
 
-Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 per class) per feature configuration. **Best configuration hyperparameters for top six models can be found [here](./tables/best_params_top_6.txt).**
+Polygon-grouped stratified 5-fold cross-validated grid search (`StratifiedGroupKFold`) on 11,000 balanced samples (1,000 per class) per feature configuration. All experiments use a fixed random seed (`seed = 42`); software package versions and the complete grid-search results for every evaluated hyperparameter combination are provided in **[tables/](./tables/)** (`{model}_gridsearch_full_results.csv`, `run_manifest.json`).
+
+**Table 4a.** Best hyperparameters for the top 6 performing configurations.
+
+| ID | Model | Best Hyperparameters |
+|:--:|:------|:----------------------|
+| 1 | AEF + LightGBM | `learning_rate=0.1, max_depth=10, n_estimators=200, num_leaves=63` |
+| 2 | AEF + XGBoost | `colsample_bytree=0.6, learning_rate=0.1, max_depth=6, n_estimators=200, subsample=1.0` |
+| 3 | AEF + Random Forest | `max_depth=20, max_features='sqrt', min_samples_leaf=1, n_estimators=100` |
+| 4 | AEF + LinearSVC | `C=0.1` |
+| 16 | S2-All + LightGBM | `learning_rate=0.05, max_depth=-1, n_estimators=200, num_leaves=63` |
+| 17 | S2-All + Random Forest | `max_depth=20, max_features='sqrt', min_samples_leaf=2, n_estimators=300` |
+
+### Uncertainty Quantification
+
+Two complementary procedures were applied to the test-set predictions of each classifier:
+
+- **Polygon-clustered bootstrap** (1,000 iterations) — reference polygons resampled with replacement to construct 95% confidence intervals for weighted F1 and overall accuracy, preserving spatial dependence rather than treating individual pixels as independent.
+- **Repeated random splits** (K = 10) — the full train/validation/test split repeated with 10 independent random seeds (identical hyperparameters) to assess sensitivity to the specific partition realization.
+
+Results are provided in **[tables/](./tables/)** (`bootstrap_ci_by_model.csv`, `bootstrap_paired_comparison.csv`, `repeated_split_summary.csv`).
+
+### Spatial Block Sensitivity Check
+
+In addition to the standard polygon-random split, a **geographically-disjoint spatial-block split** was implemented (block size determined data-drivenly from the nearest-neighbor distance distribution between polygon centroids) to test sensitivity to the splitting strategy. Results: **[tables/split_sensitivity_comparison.csv](./tables/)**.
 
 <br>
 
@@ -151,14 +180,14 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 
 | Best Model | Overall Accuracy | Weighted F1 | Cohen's κ | MCC |
 |:----------:|:----------------:|:-----------:|:---------:|:---:|
-| **AEF + LightGBM** | **95.75%** | **0.9561** | **0.9264** | **0.9266** |
-| AEF + XGBoost | 95.57% | 0.9540 | 0.9233 | 0.9234 |
-| AEF + Random Forest | 95.45% | 0.9519 | 0.9210 | 0.9212 |
-| AEF + LinearSVC | 94.34% | 0.9422 | 0.9022 | 0.9024 |
-| S2-All + XGBoost | 93.41% | 0.9313 | 0.8857 | 0.8860 |
-| S2-All + Random Forest | 93.17% | 0.9278 | 0.8809 | 0.8814 |
+| **AEF + LightGBM** | **95.79%** | **0.9566** | **0.9272** | **0.9274** |
+| AEF + XGBoost | 95.56% | 0.9541 | 0.9232 | 0.9234 |
+| AEF + Random Forest | 95.30% | 0.9508 | 0.9186 | 0.9188 |
+| AEF + LinearSVC | 94.37% | 0.9424 | 0.9027 | 0.9029 |
+| S2-All + LightGBM | 93.29% | 0.9316 | 0.8841 | 0.8842 |
+| S2-All + Random Forest | 93.10% | 0.9286 | 0.8805 | 0.8807 |
 
-> AEF + LightGBM surpasses the best conventional Sentinel-2 configuration by **+2.34 percentage points** in overall accuracy and outperforms widely used global products (ESA WorldCover ~74.4%, Dynamic World ~72%) by a substantial margin.
+> AEF + LightGBM surpasses the best conventional Sentinel-2 configuration (S2-All + LightGBM) by **+2.5 percentage points** in overall accuracy and outperforms widely used global products (ESA WorldCover ~74.4%, Dynamic World ~72%) by a substantial margin.
 
 ### Full Results — All 20 Experiments
 
@@ -166,51 +195,54 @@ Stratified 5-fold cross-validated grid search on 11,000 balanced samples (1,000 
 
 | ID | Feature Set | Model | OA | BA | F1 (W) | F1 (M) | κ | MCC |
 |:--:|:------------|:------|:--:|:--:|:------:|:------:|:-:|:---:|
-| **1** | **AEF** | **LightGBM** | **0.9575** | **0.8320** | **0.9561** | **0.8553** | **0.9264** | **0.9266** |
-| 2 | AEF | XGBoost | 0.9557 | 0.8088 | 0.9540 | 0.8375 | 0.9233 | 0.9234 |
-| 3 | AEF | Random Forest | 0.9545 | 0.7961 | 0.9519 | 0.8337 | 0.9210 | 0.9212 |
-| 4 | AEF | LinearSVC | 0.9434 | 0.8124 | 0.9422 | 0.8130 | 0.9022 | 0.9024 |
-| 5 | AEF | Decision Tree | 0.9210 | 0.7469 | 0.9199 | 0.7468 | 0.8640 | 0.8640 |
-| 6 | S2-Indices | Random Forest | 0.9157 | 0.7285 | 0.9110 | 0.7599 | 0.8532 | 0.8537 |
-| 7 | S2-Indices | XGBoost | 0.9139 | 0.7459 | 0.9108 | 0.7628 | 0.8513 | 0.8515 |
-| 8 | S2-Indices | Decision Tree | 0.8375 | 0.7298 | 0.8535 | 0.6503 | 0.7385 | 0.7432 |
-| 9 | S2-Indices | LinearSVC | 0.8149 | 0.7143 | 0.8322 | 0.6253 | 0.7038 | 0.7099 |
-| 10 | S2-Indices | LightGBM | 0.8000 | 0.6743 | 0.8261 | 0.5597 | 0.6844 | 0.6911 |
-| 11 | S2-Bands | XGBoost | 0.9303 | 0.7801 | 0.9269 | 0.8083 | 0.8790 | 0.8793 |
-| 12 | S2-Bands | Random Forest | 0.9248 | 0.7279 | 0.9202 | 0.7663 | 0.8688 | 0.8694 |
-| 13 | S2-Bands | Decision Tree | 0.8935 | 0.7269 | 0.8936 | 0.6997 | 0.8173 | 0.8174 |
-| 14 | S2-Bands | LinearSVC | 0.8438 | 0.6950 | 0.8580 | 0.6169 | 0.7442 | 0.7471 |
-| 15 | S2-Bands | LightGBM | 0.7053 | 0.5354 | 0.7476 | 0.4429 | 0.5483 | 0.5591 |
-| **16** | **S2-All** | **XGBoost** | **0.9341** | **0.7816** | **0.9313** | **0.8086** | **0.8857** | **0.8860** |
-| 17 | S2-All | Random Forest | 0.9317 | 0.7571 | 0.9278 | 0.7946 | 0.8809 | 0.8814 |
-| 18 | S2-All | Decision Tree | 0.8986 | 0.7409 | 0.9013 | 0.7044 | 0.8269 | 0.8270 |
-| 19 | S2-All | LinearSVC | 0.8974 | 0.7711 | 0.8997 | 0.7098 | 0.8260 | 0.8267 |
-| 20 | S2-All | LightGBM | 0.8288 | 0.7203 | 0.8527 | 0.6271 | 0.7251 | 0.7302 |
+| **1** | **AEF** | **LightGBM** | **0.9579** | **0.8282** | **0.9566** | **0.8510** | **0.9272** | **0.9274** |
+| 2 | AEF | XGBoost | 0.9556 | 0.8088 | 0.9541 | 0.8381 | 0.9232 | 0.9234 |
+| 3 | AEF | Random Forest | 0.9530 | 0.8045 | 0.9508 | 0.8354 | 0.9186 | 0.9188 |
+| 4 | AEF | LinearSVC | 0.9437 | 0.8130 | 0.9424 | 0.8142 | 0.9027 | 0.9029 |
+| 5 | AEF | Decision Tree | 0.9209 | 0.7522 | 0.9205 | 0.7439 | 0.8641 | 0.8641 |
+| 6 | S2-Indices | XGBoost | 0.9149 | 0.7545 | 0.9118 | 0.7700 | 0.8530 | 0.8532 |
+| 7 | S2-Indices | Random Forest | 0.9134 | 0.7482 | 0.9107 | 0.7641 | 0.8506 | 0.8508 |
+| 8 | S2-Indices | LightGBM | 0.8768 | 0.7930 | 0.8864 | 0.7166 | 0.7977 | 0.8005 |
+| 9 | S2-Indices | Decision Tree | 0.8332 | 0.7294 | 0.8500 | 0.6436 | 0.7322 | 0.7372 |
+| 10 | S2-Indices | LinearSVC | 0.8149 | 0.7143 | 0.8322 | 0.6254 | 0.7039 | 0.7100 |
+| 11 | S2-Bands | XGBoost | 0.9295 | 0.7646 | 0.9260 | 0.7936 | 0.8775 | 0.8778 |
+| 12 | S2-Bands | LightGBM | 0.9236 | 0.8092 | 0.9229 | 0.7797 | 0.8687 | 0.8689 |
+| 13 | S2-Bands | Random Forest | 0.9243 | 0.7690 | 0.9212 | 0.7840 | 0.8686 | 0.8689 |
+| 14 | S2-Bands | Decision Tree | 0.8493 | 0.7324 | 0.8654 | 0.6587 | 0.7514 | 0.7537 |
+| 15 | S2-Bands | LinearSVC | 0.8438 | 0.6950 | 0.8580 | 0.6169 | 0.7441 | 0.7471 |
+| **16** | **S2-All** | **LightGBM** | **0.9329** | **0.8118** | **0.9316** | **0.8114** | **0.8841** | **0.8842** |
+| 17 | S2-All | Random Forest | 0.9310 | 0.7894 | 0.9286 | 0.7903 | 0.8805 | 0.8807 |
+| 18 | S2-All | XGBoost | 0.9316 | 0.7758 | 0.9282 | 0.7997 | 0.8812 | 0.8815 |
+| 19 | S2-All | LinearSVC | 0.8973 | 0.7710 | 0.8996 | 0.7098 | 0.8260 | 0.8266 |
+| 20 | S2-All | Decision Tree | 0.8961 | 0.7399 | 0.8992 | 0.7000 | 0.8230 | 0.8232 |
 
 > **OA** = Overall Accuracy · **BA** = Balanced Accuracy · **F1 (W)** = Weighted F1 · **F1 (M)** = Macro F1 · **κ** = Cohen's Kappa · **MCC** = Matthews Correlation Coefficient
 
 ### Key Algorithmic Observations
 
-- **LightGBM** is the most feature-sensitive classifier: AEF → best performer (95.75%), raw S2-Bands → worst performer (70.53%). A >25 percentage point swing driven solely by input feature quality.
-- **XGBoost** is the most robust algorithm, consistently ranking within the top 2 configurations for every dataset group. Recommended as a default when feature quality is uncertain.
+- **LightGBM and XGBoost** are the strongest ensemble methods overall: LightGBM leads for AEF (OA = 0.9579) and S2-All (OA = 0.9329), while XGBoost leads for S2-Bands (OA = 0.9295) and S2-Indices (OA = 0.9149). All three ensemble methods (LightGBM, XGBoost, Random Forest) consistently rank within the **top three configurations in every dataset group**, indicating that tree-ensemble methods are broadly robust to feature-set choice for this task, with no single algorithm dominating universally.
+- **LinearSVC and Decision Tree** consistently trail the ensemble methods, most markedly on the Sentinel-2-based feature sets, reflecting the non-linear separability of the broader 11-class problem.
 - **Balanced Accuracy** is markedly lower than Overall Accuracy across all experiments, reflecting inherent class imbalance in real-world LULC distributions — an expected and ecologically meaningful outcome.
 - **Cohen's κ and MCC** converge closely across all 20 experiments, confirming metric consistency and ruling out evaluation artifacts.
+- **Statistical robustness:** polygon-clustered bootstrap 95% CIs and 10× repeated-split evaluation (see [Methods](#methods)) confirm that the top-model ranking is not an artifact of a single train/test partition.
 
 ### 🌰 Focus: Hazelnut Orchard Classification
 
-The best Hazelnut model (**ID 2, AEF + XGBoost**) correctly identified **>92%** of all actual hazelnut pixels in the unseen test set — without any crop-specific model adaptation or fine-tuning.
+The best Hazelnut model (**ID 3, AEF + Random Forest**) correctly identified **>94%** of all actual hazelnut pixels in the unseen test set — without any crop-specific model adaptation or fine-tuning.
 
-**Table 7.** Comparative performance of the top 2 models specifically for the Hazelnut orchard class.
+**Table 7.** Comparative performance of the top AEF vs. Sentinel-2 models specifically for the Hazelnut orchard class.
 
 | Model ID | Feature Set | Classifier | Precision | Recall | **F1-Score** |
 |:--------:|:------------|:-----------|:---------:|:------:|:------------:|
-| **2** | **AEF** | **XGBoost** | **0.8702** | **0.9246** | **0.8966** |
-| 1 | AEF | LightGBM | 0.8567 | 0.9298 | 0.8917 |
-| 16 | S2-All | XGBoost | 0.8898 | 0.8741 | 0.8819 |
+| **3** | **AEF** | **Random Forest** | **0.8475** | **0.9428** | **0.8926** |
+| 2 | AEF | XGBoost | 0.8610 | 0.9214 | 0.8902 |
+| 1 | AEF | LightGBM | 0.8551 | 0.9214 | 0.8871 |
+| 17 | S2-All | Random Forest | 0.8420 | 0.8652 | 0.8535 |
+| 16 | S2-All | LightGBM | 0.8679 | 0.8715 | 0.8697 |
 
-Substituting AEF embeddings for conventional S2-All features yields a **+1.47 percentage point F1 improvement** for hazelnut. This is attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
+Comparing the top same-algorithm pairing (AEF + Random Forest vs. S2-All + Random Forest) isolates a **+3.9 percentage point F1 improvement** attributable solely to AEF embeddings. This is attributable to the richer multi-sensor, multitemporal phenological signatures encoded within AEF's latent space that two-date optical imagery cannot fully resolve.
 
-> **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the **[tables/](./tables/)** directory.
+> **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the **[tables/](./tables/)** directory (`TableS1_Class_Partition_Breakdown.xlsx`, class-wise accuracy tables).
 
 > **Notebooks:** Sentinel-2 All and AlphaEarth training notebooks can be found in **[notebooks/](./notebooks/)**.
 
@@ -220,9 +252,11 @@ Substituting AEF embeddings for conventional S2-All features yields a **+1.47 pe
 
 Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels at 10 m resolution). Values are rounded to the nearest integer.
 
-**Table 8.** Estimated LULC area distribution (hectares) across Sakarya Province derived from top-performing configurations.
+> ⚠️ **Pending update:** the table below was generated prior to the reproducibility fixes described in [Methods](#methods) (fold-safe feature scaling, corrected model ranking). Because the underlying trained models have since changed, these area estimates — and the `ID 16` label below, which referred to the pre-fix S2-All + XGBoost model — will be regenerated from the corrected inference pipeline and updated here.
 
-| LULC Class | ID 1 (AEF·LGBM) | ID 2 (AEF·XGB) | ID 3 (AEF·RF) | ID 4 (AEF·SVC) | ID 16 (S2·XGB) | ID 17 (S2·RF) |
+**Table 8.** Estimated LULC area distribution (hectares) across Sakarya Province derived from top-performing configurations *(pre-correction values — see note above)*.
+
+| LULC Class | ID 1 (AEF·LGBM) | ID 2 (AEF·XGB) | ID 3 (AEF·RF) | ID 4 (AEF·SVC) | ID 16 (S2·XGB, legacy) | ID 17 (S2·RF) |
 |:-----------|----------------:|---------------:|--------------:|---------------:|---------------:|--------------:|
 | **Forest** | 187,761 | 193,932 | 213,027 | 180,527 | 208,362 | 219,476 |
 | **Hazelnut** | 92,195 | 86,900 | 83,542 | 92,249 | 66,689 | 64,313 |
@@ -239,7 +273,7 @@ Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels a
 <div align="center">
   <img src="/assets/Inference.png" width="960" alt="LULC Maps">
   <p>
-    <em><b>Figure 1</b> — Predicted LULC maps across Sakarya Province for the six best-performing model configurations.</em>
+    <em><b>Figure 1</b> — Predicted LULC maps across Sakarya Province for the six best-performing model configurations (pre-correction; pending update).</em>
   </p>
 </div>
 
@@ -255,34 +289,34 @@ Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels a
 
 ## SHAP Explainability
 
-SHAP (SHapley Additive exPlanations) analysis was conducted using `TreeExplainer` at three scales: **global**, **class-specific**, and **local (force plots)**.
+SHAP (SHapley Additive exPlanations) analysis was conducted using `TreeExplainer` at three scales: **global**, **class-specific**, and **local (force plots)**. `model_output`/`feature_perturbation` are configured explicitly rather than left at library defaults: where computationally tractable (per-class training-time analysis), SHAP values are computed in **probability space** with interventional feature perturbation, giving attributions directly comparable within a model; for the full-raster spatial SHAP maps, values remain in **raw margin (log-odds) space** with tree-path-dependent perturbation for computational tractability — magnitudes are therefore *not* directly comparable in probability terms between the AEF and Sentinel-2 raster maps. Explainer configuration is logged to `shap_config.json` / `shap_force_config.json` for every run.
 
 ### AEF Embedding Interpretability (Best Model: ID 1 — AEF + LightGBM)
 
 A limited subset of AEF dimensions drives the majority of model discriminative capacity:
 
-| Embedding | Mean SHAP | Role |
-|:---------:|:----------:|:-----|
-| **A07** | 0.5688 | Primary discriminator — dense vegetation vs. impervious surfaces |
-| **A24** | 0.5337 | Hydrological indicator (Water Bodies, Water Courses) |
-| **A51** | 0.5127 | Secondary vegetation structure encoding |
+| Embedding | Mean \|SHAP\| (probability space) | Role |
+|:---------:|:----------------------------------:|:-----|
+| **A24** | 0.0117 | Dominant feature — hydrological indicator (Water Bodies, Water Courses) |
+| **A07** | 0.0059 | Vegetation vs. impervious surface discriminator |
+| **A51** | 0.0057 | Secondary vegetation structure encoding |
 
 Class-specific SHAP patterns reveal that AEF dimensions function as **semantically interpretable "exclusion filters"**:
 
 - **Forest:** high A07 values → strong positive SHAP; low A07 → Road/Rail
-- **Water Bodies & Courses:** A24 consistently generates high positive SHAP
-- **Hazelnut:** discriminated by collective, moderate contributions from A33, A61, A10, A39 (SHAP range −2.0 to +2.0) — reflecting multi-dimensional phenological encoding
-- **Wetland:** primarily driven by A16 (transitional moisture conditions)
+- **Water Bodies & Courses:** A24 consistently generates the highest positive SHAP of any feature, consistent with its global dominance above
+- **Hazelnut:** discriminated by collective, moderate contributions from A33, A10, A49, A38 — reflecting multi-dimensional phenological encoding
+- **Wetland:** primarily driven by A16 (empirically associated with transitional moisture conditions)
 - **Urban:** well-separated through A35 and A36
 
-The **spatial distribution of cumulative Hazelnut SHAP values** (Fig 2) reveals high positive intensities clustering coherently in the northeastern coastal foothills (~30°45'E–31°E, 40°50'N–41°10'N), accurately tracking intensive orchard cultivation zones. The asymmetric SHAP range (−7.42 to **+19.15**) reflects high-confidence positive prediction in core hazelnut areas.
+The **spatial distribution of cumulative Hazelnut SHAP values** (raster-scale, margin-space) reveals intensities clustering coherently in the northeastern coastal foothills (~30°45'E–31°E, 40°50'N–41°10'N), tracking intensive orchard cultivation zones — a diagnostic visualization rather than an independent geographic validation, since cumulative SHAP is by construction tied to the model's predicted score.
 
-### Sentinel-2 SHAP Analysis (Baseline: ID 16 — S2-All + XGBoost)
+### Sentinel-2 SHAP Analysis (Baseline: ID 16 — S2-All + LightGBM)
 
-- **NDTI_Jun** emerges as the globally dominant feature (mean |SHAP| = 0.7091), mirroring A07's role in the AEF model
-- **NDTI_Oct** provides complementary post-season information (0.4058), but June remains ~2× more impactful
-- Hazelnut discrimination relies on **B11_Jun** (peak canopy SWIR) and **B6_Jun** (red-edge chlorophyll)
-- Cumulative Hazelnut SHAP spatial range is substantially more constrained (−7.58 to +**7.40**) vs. AEF (+19.15) — quantitatively demonstrating the superior discriminative certainty of foundation model embeddings for this perennial crop
+- **NDTI_Jun** emerges as the dominant feature overall, paralleling the role of A24 in the AEF model, though at a substantially smaller SHAP magnitude consistent with the probability-space configuration above
+- **NDTI_Oct** provides a reinforcing but secondary contribution
+- Hazelnut discrimination relies most on **mNDWI_Jun** and **B4_Jun**, with **B11_Jun** and **NDTI_Jun** as reinforcing multitemporal signals
+- Raster-scale spatial SHAP maps (margin-space, see note above) are pending re-generation for the corrected S2-All + LightGBM model (previously reported for S2-All + XGBoost)
 
 <br>
 
@@ -292,7 +326,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (Fig 2) reveals 
 </p>
 
 <p align="center">
-  <em><b>Figure 2</b> — Spatial distribution of cumulative SHAP values for the Hazelnut class. Left: AlphaEarth LightGBM model (ID 1). Right: Sentinel-2 XGBoost model (ID 16).</em>
+  <em><b>Figure 2</b> — Spatial distribution of cumulative SHAP values for the Hazelnut class. Left: AlphaEarth LightGBM model (ID 1). Right: Sentinel-2 LightGBM model (ID 16) — pending re-generation, see note above.</em>
 </p>
 
 <br>
@@ -304,9 +338,10 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (Fig 2) reveals 
 | **Sentinel-2 Level-2A** | [Copernicus Open Access Hub](https://scihub.copernicus.eu) · GEE: `COPERNICUS/S2_SR_HARMONIZED` |
 | **AlphaEarth Foundation Embeddings** | Google Earth Engine: `Satellite Embedding V1` (2017–2025, 10 m) |
 | **Classification code & configs** | This repository |
-| **LULC maps (interactive)** | [GEE Web Application](https://laboratory-490414.projects.earthengine.app/view/ml-based-lulc-mapping-with-aef-embeddings-and-sentinel-2) |
+| **LULC maps (interactive)** | [GEE Web Application](#) *(link to be updated)* |
 | **Detailed Metric Tables** | [View Folder](./tables/) |
 | **Training Notebooks** | [View Folder](./notebooks/) |
+| **Reproducibility artifacts** | `run_manifest.json`, `{model}_gridsearch_full_results.csv`, `bootstrap_ci_by_model.csv`, `bootstrap_paired_comparison.csv`, `repeated_split_summary.csv`, `split_sensitivity_comparison.csv`, `split_summary_by_class_partition[_spatial_block].csv`, `shap_config.json` — all in [tables/](./tables/) |
 
 <br>
 

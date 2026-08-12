@@ -144,7 +144,7 @@ All five classifiers are wrapped in a `scikit-learn` `Pipeline` (`StandardScaler
 
 ### Hyperparameter Optimization
 
-Polygon-grouped stratified 5-fold cross-validated grid search (`StratifiedGroupKFold`) on 11,000 balanced samples (1,000 per class) per feature configuration. All experiments use a fixed random seed (`seed = 42`); software package versions and the complete grid-search results for every evaluated hyperparameter combination are provided in **[tables/](./tables/)** (`{model}_gridsearch_full_results.csv`, `run_manifest.json`).
+Polygon-grouped stratified 5-fold cross-validated grid search (`StratifiedGroupKFold`) on 11,000 balanced samples (1,000 per class) per feature configuration. All experiments use a fixed random seed (`seed = 42`); software package versions and the complete grid-search results for every evaluated hyperparameter combination are provided in **[tables/gridsearch-results/](./tables/gridsearch-results/)** (`{model}_gridsearch_full_results.csv`, `run_manifest.json`).
 
 **Table 4a.** Best hyperparameters for the top 6 performing configurations.
 

@@ -1,0 +1,11 @@
+split_strategy,model,n_train_groups,n_test_groups,test_f1_weighted,test_overall_accuracy
+polygon_random,RandomForest,4387,610,0.9508,0.953
+polygon_random,DecisionTree,4387,610,0.9205,0.9209
+polygon_random,XGBoost,4387,610,0.9541,0.9556
+polygon_random,LightGBM,4387,610,0.9566,0.9579
+polygon_random,LinearSVC,4387,610,0.9424,0.9437
+spatial_block,RandomForest,2210,307,0.9771,0.977
+spatial_block,DecisionTree,2210,307,0.9506,0.9483
+spatial_block,XGBoost,2210,307,0.9765,0.9765
+spatial_block,LightGBM,2210,307,0.9772,0.9769
+spatial_block,LinearSVC,2210,307,0.9736,0.9727

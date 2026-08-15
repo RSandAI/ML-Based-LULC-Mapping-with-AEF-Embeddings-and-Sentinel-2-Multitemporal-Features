@@ -321,8 +321,8 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (raster-scale, m
 <br>
 
 <p align="center">
-  <img src="/assets/Hazelnut_SHAP_AlphaEarth.png" width="45%" alt="AlphaEarth">
-  <img src="/assets/Hazelnut_SHAP_Sentinel_2.png" width="45%" alt="Sentinel-2">
+  <img src="/assets/supplementary-figures/hazelnut_shap_ae.png" width="45%" alt="AlphaEarth">
+  <img src="/assets/supplementary-figures/hazelnut_shap_s2.png" width="45%" alt="Sentinel-2">
 </p>
 
 <p align="center">

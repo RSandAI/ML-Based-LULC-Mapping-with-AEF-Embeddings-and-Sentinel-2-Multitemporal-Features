@@ -81,7 +81,7 @@ Training and validation samples were collected as polygon-based reference data f
 
 ### LULC Classes (11-class scheme)
 
-`Hazelnut` · `Forest` · `Permanent Cropland` · `Arable Land` · `Grassland` · `Sparsely Vegetated Areas` · `Discontinuous Urban Fabric` · `Road and Rail Networks` · `Water Courses` · `Water Bodies` · `Wetland`
+`Hazelnut` · `Forest` · `Permanent cropland` · `Arable land` · `Grassland` · `Sparsely vegetated areas` · `Discontinuous urban fabric` · `Road and rail networks` · `Water courses` · `Water bodies` · `Wetlands`
 
 <br>
 
@@ -252,38 +252,36 @@ Comparing the top same-algorithm pairing (AEF + Random Forest vs. S2-All + Rando
 
 Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels at 10 m resolution). Values are rounded to the nearest integer.
 
-> ⚠️ **Pending update:** the table below was generated prior to the reproducibility fixes described in [Methods](#methods) (fold-safe feature scaling, corrected model ranking). Because the underlying trained models have since changed, these area estimates — and the `ID 16` label below, which referred to the pre-fix S2-All + XGBoost model — will be regenerated from the corrected inference pipeline and updated here.
+**Table 8.** Estimated LULC area distribution (hectares) across Sakarya Province derived from top-performing configurations.
 
-**Table 8.** Estimated LULC area distribution (hectares) across Sakarya Province derived from top-performing configurations *(pre-correction values — see note above)*.
-
-| LULC Class | ID 1 (AEF·LGBM) | ID 2 (AEF·XGB) | ID 3 (AEF·RF) | ID 4 (AEF·SVC) | ID 16 (S2·XGB, legacy) | ID 17 (S2·RF) |
+| LULC Class | ID 1 (AEF·LGBM) | ID 2 (AEF·XGB) | ID 3 (AEF·RF) | ID 4 (AEF·SVC) | ID 16 (S2·LGBM) | ID 17 (S2·RF) |
 |:-----------|----------------:|---------------:|--------------:|---------------:|---------------:|--------------:|
-| **Forest** | 187,761 | 193,932 | 213,027 | 180,527 | 208,362 | 219,476 |
-| **Hazelnut** | 92,195 | 86,900 | 83,542 | 92,249 | 66,689 | 64,313 |
-| **Arable Land** | 69,911 | 75,221 | 85,101 | 65,699 | 100,024 | 108,089 |
-| **Permanent Cropland** | 38,836 | 34,325 | 26,957 | 47,143 | 26,512 | 19,345 |
-| **Grassland** | 28,667 | 27,130 | 18,324 | 25,813 | 22,701 | 17,617 |
-| **Sparsely Vegetated** | 22,392 | 23,171 | 13,885 | 24,685 | 17,660 | 14,386 |
-| **Urban** | 21,279 | 22,022 | 26,299 | 22,013 | 27,185 | 29,225 |
-| **Road and Rail** | 16,371 | 14,981 | 11,240 | 16,499 | 9,145 | 6,670 |
-| **Water Bodies** | 9,044 | 9,138 | 9,392 | 9,922 | 9,048 | 9,054 |
-| **Wetland** | 1,643 | 1,334 | 815 | 3,326 | 1,135 | 439 |
-| **Water Course** | 1,342 | 1,289 | 860 | 1,565 | 979 | 827 |
+| **Forest** | 187,761 | 193,932 | 213,027 | 180,527 | 189,360 | 219,476 |
+| **Hazelnut** | 92,195 | 86,900 | 83,542 | 92,249 | 74,581 | 64,313 |
+| **Arable land** | 69,911 | 75,221 | 85,101 | 65,699 | 74,659 | 108,089 |
+| **Permanent cropland** | 38,836 | 34,325 | 26,957 | 47,143 | 42,308 | 19,345 |
+| **Grassland** | 28,667 | 27,130 | 18,324 | 25,813 | 33,694 | 17,617 |
+| **Sparsely vegetated areas** | 22,392 | 23,171 | 13,885 | 24,685 | 25,718 | 14,386 |
+| **Discontinuous urban fabric** | 21,279 | 22,022 | 26,299 | 22,013 | 24,683 | 29,225 |
+| **Road and rail networks** | 16,371 | 14,981 | 11,240 | 16,499 | 12,410 | 6,670 |
+| **Water bodies** | 9,044 | 9,138 | 9,392 | 9,922 | 9,000 | 9,054 |
+| **Wetlands** | 1,643 | 1,334 | 815 | 3,326 | 2,007 | 439 |
+| **Water courses** | 1,342 | 1,289 | 860 | 1,565 | 1,022 | 827 |
 
 <div align="center">
   <img src="/assets/Inference.png" width="960" alt="LULC Maps">
   <p>
-    <em><b>Figure 1</b> — Predicted LULC maps across Sakarya Province for the six best-performing model configurations (pre-correction; pending update).</em>
+    <em><b>Figure 1</b> — Predicted LULC maps across Sakarya Province for the six best-performing model configurations.</em>
   </p>
 </div>
 
 ### Notable Spatial Patterns
 
 - **Forest** is the dominant land cover in all configurations (180,500–219,500 ha), reflecting dense forestation in the northern and eastern portions of the province.
-- **Hazelnut** mapped extents are systematically larger in AEF-based models (83,500–92,200 ha) compared to Sentinel-2 models (64,300–66,700 ha). This divergence likely reflects AEF embeddings capturing broader phenological and structural hazelnut signatures that are otherwise misclassified as Arable Land under conventional spectral features.
-- **Arable Land** is correspondingly larger in S2 models (100,000–108,100 ha) vs. AEF models (65,700–85,100 ha), consistent with the above hypothesis.
-- **Water Bodies** show the highest inter-model consistency (~9,000–9,900 ha), expected given the strong spectral contrast of open water.
-- **Wetland and Water Course** exhibit the highest relative variance, consistent with their small spatial extent, spectral ambiguity, and limited training data.
+- **Hazelnut** mapped extents are systematically larger in AEF-based models (83,500–92,200 ha) compared to Sentinel-2 models (64,300–74,500 ha). This divergence likely reflects AEF embeddings capturing broader phenological and structural hazelnut signatures that are otherwise misclassified as Arable land under conventional spectral features.
+- **Arable land** is correspondingly larger in S2 models (74,600–108,100 ha) vs. AEF models (65,700–85,100 ha), consistent with the above hypothesis.
+- **Water bodies** show the highest inter-model consistency (~9,000–9,900 ha), expected given the strong spectral contrast of open water.
+- **Wetlands and water courses** exhibit the highest relative variance, consistent with their small spatial extent, spectral ambiguity, and limited training data.
 
 <br>
 
@@ -297,17 +295,17 @@ A limited subset of AEF dimensions drives the majority of model discriminative c
 
 | Embedding | Mean \|SHAP\| (probability space) | Role |
 |:---------:|:----------------------------------:|:-----|
-| **A24** | 0.0117 | Dominant feature — hydrological indicator (Water Bodies, Water Courses) |
+| **A24** | 0.0117 | Dominant feature — hydrological indicator (Water bodies, Water courses) |
 | **A07** | 0.0059 | Vegetation vs. impervious surface discriminator |
 | **A51** | 0.0057 | Secondary vegetation structure encoding |
 
 Class-specific SHAP patterns reveal that AEF dimensions function as **semantically interpretable "exclusion filters"**:
 
-- **Forest:** high A07 values → strong positive SHAP; low A07 → Road/Rail
-- **Water Bodies & Courses:** A24 consistently generates the highest positive SHAP of any feature, consistent with its global dominance above
+- **Forest:** high A07 values → strong positive SHAP; low A07 → Road and rail networks
+- **Water bodies & courses:** A24 consistently generates the highest positive SHAP of any feature, consistent with its global dominance above
 - **Hazelnut:** discriminated by collective, moderate contributions from A33, A10, A49, A38 — reflecting multi-dimensional phenological encoding
-- **Wetland:** primarily driven by A16 (empirically associated with transitional moisture conditions)
-- **Urban:** well-separated through A35 and A36
+- **Wetlands:** primarily driven by A16 (empirically associated with transitional moisture conditions)
+- **Discontinuous urban fabric:** well-separated through A35 and A36
 
 The **spatial distribution of cumulative Hazelnut SHAP values** (raster-scale, margin-space) reveals intensities clustering coherently in the northeastern coastal foothills (~30°45'E–31°E, 40°50'N–41°10'N), tracking intensive orchard cultivation zones — a diagnostic visualization rather than an independent geographic validation, since cumulative SHAP is by construction tied to the model's predicted score.
 
@@ -356,7 +354,6 @@ If you use this code or data in your research, please cite:
              Hazelnut (\textit{Corylus avellana} {L.}) Orchard},
   author  = {Sertel, Elif and Ilmak, Dogu and Aksoy, Samet and Ustaoglu, Beyza},
   journal = {International Journal of Digital Earth},
-  year    = {2025},
+  year    = {2026},
   note    = {Under review}
 }
-```

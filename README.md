@@ -269,7 +269,7 @@ Pixel-count area estimates across Sakarya Province (~48.9 million valid pixels a
 | **Water courses** | 1,342 | 1,289 | 860 | 1,565 | 1,022 | 827 |
 
 <div align="center">
-  <img src="/assets/Inference.png" width="960" alt="LULC Maps">
+  <img src="/assets/supplementary-figures/inference.png" width="960" alt="LULC Maps">
   <p>
     <em><b>Figure 1</b> — Predicted LULC maps across Sakarya Province for the six best-performing model configurations.</em>
   </p>

@@ -81,7 +81,7 @@ Training and validation samples were collected as polygon-based reference data f
 
 ### LULC Classes (11-class scheme)
 
-`Hazelnut` · `Forest` · `Permanent cropland` · `Arable land` · `Grassland` · `Sparsely vegetated areas` · `Discontinuous urban fabric` · `Road and rail networks` · `Water courses` · `Water bodies` · `Wetlands`
+`Hazelnut` · `Forest` · `Permanent cropland` · `Arable land` · `Grassland` · `Sparsely vegetated areas` · `Urban fabric` · `Road and rail networks` · `Water courses` · `Water bodies` · `Wetlands`
 
 <br>
 

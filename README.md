@@ -324,7 +324,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (raster-scale, m
 </p>
 
 <p align="center">
-  <em><b>Figure 2</b> — Spatial distribution of cumulative SHAP values for the Hazelnut class. Left: AlphaEarth LightGBM model (ID 1). Right: Sentinel-2 LightGBM model (ID 16) — pending re-generation, see note above.</em>
+  <em><b>Figure 2</b> — Spatial distribution of cumulative SHAP values for the Hazelnut class. Left: AlphaEarth LightGBM model (ID 1). Right: Sentinel-2 LightGBM model (ID 16).</em>
 </p>
 
 <br>

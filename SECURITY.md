@@ -2,6 +2,8 @@
 
 This is an academic research repository associated with a peer-reviewed publication. It does not operate any production services or user-facing infrastructure.
 
+<br>
+
 ## Reporting a Vulnerability
 
 If you discover a security issue — such as an exposed credential, a vulnerable dependency, or malicious code — please **do not open a public issue**. Instead, report it privately:

@@ -244,7 +244,7 @@ Comparing the top same-algorithm pairing (AEF + Random Forest vs. S2-All + Rando
 
 > **Detailed Metrics:** For a comprehensive breakdown of all 20 experiments—including per-class precision, recall, and F1-scores—please refer to the **[tables/](./tables/)** directory.
 
-> **Notebooks:** Sentinel-2 All and AlphaEarth training notebooks can be found in **[notebooks/](./notebooks/)**.
+> **Code:** Training code can be found in **[code/](./code/)**.
 
 <br>
 

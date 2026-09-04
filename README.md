@@ -41,7 +41,7 @@
 - [Performance Metrics](#performance-metrics)
 - [Estimated LULC Distribution (Hectares)](#estimated-lulc-distribution-hectares)
 - [SHAP Explainability](#shap-explainability)
-- [Reproducibility & Data Availability](#reproducibility-data-availability)
+- [Reproducibility and Data Availability](#reproducibility-and-data-availability)
 - [Citation](#citation)
 
 </details>
@@ -329,7 +329,7 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (raster-scale, m
 
 <br>
 
-## Reproducibility & Data Availability
+## Reproducibility and Data Availability
 
 ### Computational Environment
 All models and explainability analyses were executed in the following software environment, with complete configuration details logged in the [`environment/`](./environment/) directory:

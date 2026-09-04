@@ -6,9 +6,9 @@ This is an academic research repository associated with a peer-reviewed publicat
 
 If you discover a security issue — such as an exposed credential, a vulnerable dependency, or malicious code — please **do not open a public issue**. Instead, report it privately:
 
-- **Email:** [esertel@ucla.edu](mailto:esertel@ucla.edu)
+- **Email:** [elifsertel@gmail.com](mailto:elifsertel@gmail.com)
 
-We will acknowledge your report within **5 business days**.
+Please include a brief description of the vulnerability and, if possible, steps to reproduce it.
 
 ## Credentials
 

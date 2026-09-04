@@ -24,7 +24,7 @@
 ⁴ Linnaeus University — Dept. of Forestry and Wood Technology  
 ⁵ Sakarya University — Department of Geography
 
-**Corresponding author:** [esertel@ucla.edu](mailto:esertel@ucla.edu)
+**Corresponding author:** [elifsertel@gmail.com](mailto:elifsertel@gmail.com)
 
 <br>
 

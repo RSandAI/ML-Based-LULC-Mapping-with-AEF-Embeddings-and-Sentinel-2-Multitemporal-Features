@@ -41,7 +41,7 @@
 - [Performance Metrics](#performance-metrics)
 - [Estimated LULC Distribution (Hectares)](#estimated-lulc-distribution-hectares)
 - [SHAP Explainability](#shap-explainability)
-- [Data Availability](#data-availability)
+- [Reproducibility & Data Availability](#reproducibility-data-availability)
 - [Citation](#citation)
 
 </details>

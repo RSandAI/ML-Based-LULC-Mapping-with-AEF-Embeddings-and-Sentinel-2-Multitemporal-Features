@@ -347,7 +347,7 @@ All models and explainability analyses were executed in the following software e
 | **Classification code & configs** | This repository |
 | **LULC maps (interactive)** | [GEE Web Application](#) *(link to be updated)* |
 | **Detailed Metric Tables** | [View Folder](./tables/) |
-| **Training Notebooks** | [View Folder](./notebooks/) |
+| **Training Code** | [View Folder](./code/) |
 | **Reproducibility artifacts** | Metric summaries, bootstrap CIs, and grid-search results in [`tables/`](./tables/). Software environments and SHAP configs in [`environment/`](./environment/). |
 
 <br>

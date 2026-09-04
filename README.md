@@ -327,19 +327,19 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (raster-scale, m
   <em><b>Figure 2</b> — Spatial distribution of cumulative SHAP values for the Hazelnut class. Left: AlphaEarth LightGBM model (ID 1). Right: Sentinel-2 LightGBM model (ID 16).</em>
 </p>
 
-### Computational Environment
+<br>
 
-All models and explainability analyses were executed in the following software environment, with complete configuration details logged in the `environment/` directory (specifically [`environment/`](./environment/)):
+## Reproducibility & Data Availability
+
+### Computational Environment
+All models and explainability analyses were executed in the following software environment, with complete configuration details logged in the [`environment/`](./environment/) directory:
 
 * **Python:** 3.12.13
 * **Machine Learning:** scikit-learn (1.6.1), LightGBM (4.7.0), XGBoost (3.4.0)
 * **Explainability:** SHAP (0.52.0)
 * **Data Processing:** NumPy (2.0.2), Pandas (2.2.2)
 
-<br>
-
-## Data Availability
-
+### Dataset & Artifact Access
 | Resource | Access |
 |----------|--------|
 | **Sentinel-2 Level-2A** | [Copernicus Open Access Hub](https://scihub.copernicus.eu) · GEE: `COPERNICUS/S2_SR_HARMONIZED` |
@@ -348,7 +348,7 @@ All models and explainability analyses were executed in the following software e
 | **LULC maps (interactive)** | [GEE Web Application](#) *(link to be updated)* |
 | **Detailed Metric Tables** | [View Folder](./tables/) |
 | **Training Notebooks** | [View Folder](./notebooks/) |
-| **Reproducibility artifacts** | `run_manifest.json`, `{model}_gridsearch_full_results.csv`, `bootstrap_ci_by_model.csv`, `bootstrap_paired_comparison.csv`, `repeated_split_summary.csv`, `split_sensitivity_comparison.csv`, `split_summary_by_class_partition[_spatial_block].csv`, `shap_config.json` — all in [tables/](./tables/) |
+| **Reproducibility artifacts** | Metric summaries, bootstrap CIs, and grid-search results in [`tables/`](./tables/). Software environments and SHAP configs in [`environment/`](./environment/). |
 
 <br>
 

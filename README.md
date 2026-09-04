@@ -144,7 +144,7 @@ All five classifiers are wrapped in a `scikit-learn` `Pipeline` (`StandardScaler
 
 ### Hyperparameter Optimization
 
-Polygon-grouped stratified 5-fold cross-validated grid search (`StratifiedGroupKFold`) on 11,000 balanced samples (1,000 per class) per feature configuration. All experiments use a fixed random seed (`seed = 42`); software package versions and the complete grid-search results for every evaluated hyperparameter combination are provided in **[tables/gridsearch-results/](./tables/gridsearch-results/)** (`{model}_gridsearch_full_results.csv`, `run_manifest.json`).
+Polygon-grouped stratified 5-fold cross-validated grid search (`StratifiedGroupKFold`) on 11,000 balanced samples (1,000 per class) per feature configuration. All experiments use a fixed random seed (`seed = 42`); software package versions and the complete grid-search results for every evaluated hyperparameter combination are provided in **[tables/gridsearch-results/](./tables/gridsearch-results/)** (`{model}_gridsearch_full_results.csv`).
 
 **Table 4a.** Best hyperparameters for the top 6 performing configurations.
 
@@ -326,6 +326,15 @@ The **spatial distribution of cumulative Hazelnut SHAP values** (raster-scale, m
 <p align="center">
   <em><b>Figure 2</b> — Spatial distribution of cumulative SHAP values for the Hazelnut class. Left: AlphaEarth LightGBM model (ID 1). Right: Sentinel-2 LightGBM model (ID 16).</em>
 </p>
+
+### Computational Environment
+
+All models and explainability analyses were executed in the following software environment, with complete configuration details logged in the `environment/` directory (specifically [`environment/`](./environment/)):
+
+* **Python:** 3.12.13
+* **Machine Learning:** scikit-learn (1.6.1), LightGBM (4.7.0), XGBoost (3.4.0)
+* **Explainability:** SHAP (0.52.0)
+* **Data Processing:** NumPy (2.0.2), Pandas (2.2.2)
 
 <br>
 

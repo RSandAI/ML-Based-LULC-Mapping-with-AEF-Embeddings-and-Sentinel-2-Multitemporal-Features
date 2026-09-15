@@ -357,7 +357,7 @@ All models and explainability analyses were executed in the following software e
 If you use this code or data in your research, please cite:
 
 ```bibtex
-@article{Sertel2026LULC_AEF,
+@article{Sertel2026LULC,
   title   = {Machine Learning-Based {LULC} Mapping with {AlphaEarth} Foundation Embeddings
              and {Sentinel-2} Multitemporal Features: A Comparative Study Focusing on
              Hazelnut (\textit{Corylus avellana} {L.}) Orchards},

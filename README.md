@@ -354,10 +354,13 @@ All models and explainability analyses were executed in the following software e
 
 ## Citation
 
-If you use this code or data in your research, please cite:
+If you use this code, model, or dataset in your research, please cite our paper:
 
+> Sertel, E., Ilmak, D., Aksoy, S., & Ustaoglu, B. (2026). Machine Learning-Based LULC Mapping with AlphaEarth Foundation Embeddings and Sentinel-2 Multitemporal Features: A Comparative Study Focusing on Hazelnut (*Corylus avellana* L.) Orchards. *International Journal of Digital Earth*. [https://doi.org/10.1080/17538947.2026.2732311](https://doi.org/10.1080/17538947.2026.2732311)
+
+**BibTeX:**
 ```bibtex
-@article{Sertel2026LULC,
+@article{Sertel2026LULC_AEF,
   title   = {Machine Learning-Based {LULC} Mapping with {AlphaEarth} Foundation Embeddings
              and {Sentinel-2} Multitemporal Features: A Comparative Study Focusing on
              Hazelnut (\textit{Corylus avellana} {L.}) Orchards},
@@ -365,5 +368,5 @@ If you use this code or data in your research, please cite:
   journal = {International Journal of Digital Earth},
   year    = {2026},
   doi     = {10.1080/17538947.2026.2732311},
-  url     = {https://doi.org/10.1080/17538947.2026.2732311}
+  url     = {[https://doi.org/10.1080/17538947.2026.2732311](https://doi.org/10.1080/17538947.2026.2732311)}
 }

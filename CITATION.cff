@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software/dataset in your research, please cite the following article."
+title: "Machine Learning-Based LULC Mapping with AlphaEarth Foundation Embeddings and Sentinel-2 Multitemporal Features"
+authors:
+  - family-names: "Sertel"
+    given-names: "Elif"
+  - family-names: "Ilmak"
+    given-names: "Dogu"
+  - family-names: "Aksoy"
+    given-names: "Samet"
+  - family-names: "Ustaoglu"
+    given-names: "Beyza"
+preferred-citation:
+  type: article
+  title: "Machine Learning-Based LULC Mapping with AlphaEarth Foundation Embeddings and Sentinel-2 Multitemporal Features: A Comparative Study Focusing on Hazelnut (Corylus avellana L.) Orchards"
+  authors:
+    - family-names: "Sertel"
+      given-names: "Elif"
+    - family-names: "Ilmak"
+      given-names: "Dogu"
+    - family-names: "Aksoy"
+      given-names: "Samet"
+    - family-names: "Ustaoglu"
+      given-names: "Beyza"
+  journal: "International Journal of Digital Earth"
+  year: 2026
+  doi: "10.1080/17538947.2026.2732311"
+  url: "https://doi.org/10.1080/17538947.2026.2732311"

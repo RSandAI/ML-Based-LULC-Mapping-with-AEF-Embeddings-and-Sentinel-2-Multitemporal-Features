@@ -357,12 +357,13 @@ All models and explainability analyses were executed in the following software e
 If you use this code or data in your research, please cite:
 
 ```bibtex
-@article{Sertel2025LULC_AEF,
+@article{Sertel2026LULC_AEF,
   title   = {Machine Learning-Based {LULC} Mapping with {AlphaEarth} Foundation Embeddings
              and {Sentinel-2} Multitemporal Features: A Comparative Study Focusing on
              Hazelnut (\textit{Corylus avellana} {L.}) Orchards},
   author  = {Sertel, Elif and Ilmak, Dogu and Aksoy, Samet and Ustaoglu, Beyza},
   journal = {International Journal of Digital Earth},
   year    = {2026},
-  note    = {Under review}
+  doi     = {10.1080/17538947.2026.2732311},
+  url     = {https://doi.org/10.1080/17538947.2026.2732311}
 }

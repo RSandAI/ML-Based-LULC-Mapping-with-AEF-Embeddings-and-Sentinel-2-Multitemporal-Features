@@ -43,6 +43,7 @@
 - [SHAP Explainability](#shap-explainability)
 - [Reproducibility and Data Availability](#reproducibility-and-data-availability)
 - [Citation](#citation)
+- [License](#license)
 
 </details>
 
@@ -370,3 +371,8 @@ If you use this code, model, or dataset in your research, please cite our paper:
   doi     = {10.1080/17538947.2026.2732311},
   url     = {[https://doi.org/10.1080/17538947.2026.2732311](https://doi.org/10.1080/17538947.2026.2732311)}
 }
+```
+
+## License
+- The source code in this repository is licensed under the [MIT License](LICENSE).
+- The dataset, figures, and associated paper are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0).
